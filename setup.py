@@ -35,12 +35,12 @@ setup(
     ],
     license="LGPL 3",
     install_requires=[
-        "pydot==1.0.28",
+        "pydot==1.4.1",
         "pysmell @ git+git://github.com/wankata/pysmell#egg=pysmell",
-        "pyplete==0.0.2",
-        "python-graph-core==1.8.1",
-        "python-graph-dot==1.8.1",
-        "django-form-admin==0.3.2"
+        "pyplete==0.0.5",
+        "python-graph-core==1.8.2",
+        "python-graph-dot==1.8.2",
+        "django-form-admin==0.5.1"
     ],
     keywords="django,imports,cycle,cyclic imports,analyze code",
     url='https://github.com/goinnn/django-detect-cyclic',
