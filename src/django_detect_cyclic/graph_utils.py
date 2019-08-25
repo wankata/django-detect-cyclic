@@ -66,25 +66,25 @@ def create_graph_test(*args, **kwargs):
 def treatment_final_graph(gr, remove_isolated_nodes=False, remove_sink_nodes=False,
                           remove_source_nodes=False, only_cyclic=False, verbosity=1):
     if only_cyclic:
-        for edge, properties in gr.edge_properties.items():
-            if not unicode(CYCLE_LABEL) in properties['label']:
+        for edge, properties in list(gr.edge_properties.items()):
+            if not str(CYCLE_LABEL) in properties['label']:
                 if print_log_info(verbosity):
                     log.info("Remove the edge %s-->%s" % edge)
                 gr.del_edge(edge)
     if remove_source_nodes:
-        for node, incidence in gr.node_incidence.items():
+        for node, incidence in list(gr.node_incidence.items()):
             if not incidence:
                 if print_log_info(verbosity):
                     log.info("Remove the node %s" % node)
                 gr.del_node(node)
     if remove_sink_nodes:
-        for node, neighbor in gr.node_neighbors.items():
+        for node, neighbor in list(gr.node_neighbors.items()):
             if not neighbor:
                 if print_log_info(verbosity):
                     log.info("Remove the node %s" % node)
                 gr.del_node(node)
     if remove_isolated_nodes:
-        for node, incidence in gr.node_incidence.items():
+        for node, incidence in list(gr.node_incidence.items()):
             neighbor = gr.node_neighbors.get(node, None)
             if not incidence and not neighbor:
                 if print_log_info(verbosity):
@@ -111,7 +111,7 @@ def mark_cycle(gr, cycle, number_cycle, gr_copy, use_colors=True):
         except IndexError:
             next_item = cycle[0]
         weight = gr.edge_weight((item, next_item))
-        gr.set_edge_label((item, next_item), "%s %s (%s)" % (unicode(CYCLE_LABEL), number_cycle, weight))
+        gr.set_edge_label((item, next_item), "%s %s (%s)" % (str(CYCLE_LABEL), number_cycle, weight))
         gr_copy.del_edge((item, next_item))
         i += 1
         if use_colors:

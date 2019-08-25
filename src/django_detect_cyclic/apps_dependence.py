@@ -79,7 +79,7 @@ def _add_edges_to_package(gr, package, app_source, applications,
     importables_to_app = []
     try:
         pyplete.get_importables_rest_level(importables_to_app, package_modules[0], package_modules[1:], into_module=False)
-    except SyntaxError, e:
+    except SyntaxError as e:
         if print_log_error(verbosity):
             log.error("\t File: %s SyntaxError %s" % (package_modules, e))
 
@@ -112,11 +112,11 @@ def _add_edges_to_package(gr, package, app_source, applications,
         code = pyplete.get_imp_loader_from_path(package_modules[0], package_modules[1:] + [importable_to_app])[0].get_source()
         try:
             imports_code = pyplete.get_pysmell_modules_to_text(code)['POINTERS']
-        except SyntaxError, e:
+        except SyntaxError as e:
             if print_log_error(verbosity):
                 log.error("\t File: %s SyntaxError %s" % (package_modules + [importable_to_app], e))
             continue
-        for import_code in imports_code.values():
+        for import_code in list(imports_code.values()):
             if isinstance(import_code, list):
                 for i in import_code:
                     _add_edge_from_import_code(gr, applications, app_source,
@@ -191,7 +191,7 @@ def _add_edge(gr, node1, node2, verbosity=1, style="filled"):
         gr.set_edge_label((node1, node2), "(%s)" % weight)
     attributes = dict(gr.edge_attributes((node1, node2)))
     attributes['style'] = style
-    gr.edge_attr[(node1, node2)] = attributes.items()
+    gr.edge_attr[(node1, node2)] = list(attributes.items())
 
 
 def _has_scope_global(gr, node1, node2):
@@ -202,7 +202,7 @@ def _edge_style(pyplete_global, gr, node1, node2, import_code, code):
     dotted = "filled"
     if pyplete_global and not _has_scope_global(gr, node1, node2):
         imports_code_global = pyplete_global.get_pysmell_modules_to_text(code)['POINTERS']
-        if not import_code in imports_code_global.values():
+        if not import_code in list(imports_code_global.values()):
             dotted = "dotted"
     return dotted
 
@@ -219,7 +219,7 @@ def _get_module_to_generic_import(gr, import_code, pyplete=None, verbosity=1, sc
     imports = []
     try:
         pyplete.get_importables_rest_level(imports, import_code[0], import_code[1:])
-    except SyntaxError, e:
+    except SyntaxError as e:
         if print_log_error(verbosity):
             log.error("\t File: %s SyntaxError %s" % (import_code, e))
         return None
