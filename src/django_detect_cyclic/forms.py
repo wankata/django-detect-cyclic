@@ -18,7 +18,7 @@ import os
 import pydot
 
 from django import forms
-from django.forms.util import ErrorList
+from django.forms.utils import ErrorList
 from django.contrib.admin import widgets as widgets_admin
 from django.conf import settings
 from django.template.defaultfilters import slugify
